@@ -1,0 +1,12 @@
+
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(™“é
+x
+java:S1488T"]Immediately return this expression instead of assigning it to the temporary variable "score".(àËˆ›üÿÿÿÿ
+J
+java:S1128"4Remove this unused import 'java.text.DecimalFormat'.(¤°Ó˜
+<
+java:S2111S"!Use "BigDecimal.valueOf" instead.(´†‡ıÿÿÿÿ
+K
+java:S1874T"0Remove this use of "setScale"; it is deprecated.(àËˆ›üÿÿÿÿ
+P
+java:S1874T"5Remove this use of "ROUND_HALF_UP"; it is deprecated.(àËˆ›üÿÿÿÿ

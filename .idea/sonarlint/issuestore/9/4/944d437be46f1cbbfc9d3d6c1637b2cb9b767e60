@@ -1,0 +1,55 @@
+
+V	java:S106‘"9Replace this use of System.out or System.err by a logger.(ÆÀûı8ÙÛË“ô.
+[	java:S106–"9Replace this use of System.out or System.err by a logger.(¶ÖÒ¥ûÿÿÿÿ8ÙÛË“ô.
+U	java:S106Ê"9Replace this use of System.out or System.err by a logger.(¯¨ï+8Ûµ“Çó.
+v
+java:S1104"TMake userName a static final constant or non-public and provide accessors if needed.(ó¥úıÿÿÿÿ8Ûµ“Çó.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(¯ÙÜ’øÿÿÿÿ8Ûµ“Çó.
+O
+java:S4925"-Remove this "Class.forName()", it is useless.(¹µÖÁüÿÿÿÿ8Ûµ“Çó.
+\
+java:S1118
+":Add a private constructor to hide the implicit public one.(×ŸÚˆşÿÿÿÿ8Ûµ“Çó.
+l
+java:S1104"OMake url a static final constant or non-public and provide accessors if needed.(›¢Í‚8Ûµ“Çó.
+d
+java:S2259["BA "NullPointerException" could be thrown; "conn" is nullable here.(·ë¡ãøÿÿÿÿ8Ûµ“Çó.
+X	java:S125"<This block of commented-out lines of code should be removed.(™£ú‰8Ûµ“Çó.
+k	java:S100¼"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Îä¶‰8Ûµ“Çó.
+e
+java:S2259Ä"BA "NullPointerException" could be thrown; "conn" is nullable here.(ÓŒÉÙøÿÿÿÿ8Ûµ“Çó.
+e
+java:S2259"BA "NullPointerException" could be thrown; "conn" is nullable here.(ÓŒÉÙøÿÿÿÿ8Ûµ“Çó.
+v
+java:S1104"TMake passWord a static final constant or non-public and provide accessors if needed.(òÜ°ßûÿÿÿÿ8Ûµ“Çó.
+X	java:S125w"<This block of commented-out lines of code should be removed.(šÏ¢ô8Ûµ“Çó.
+k	java:S100ˆ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ƒ¬ë8Ûµ“Çó.
+Y	java:S125‹"<This block of commented-out lines of code should be removed.(¾¡Å×8ÙÛË“ô.
+V	java:S106¯"9Replace this use of System.out or System.err by a logger.(À«§œ8ÙÛË“ô.
+P
+java:S1444".Make this "public static userName" field final(ó¥úıÿÿÿÿ8Ûµ“Çó.
+P
+java:S1444".Make this "public static passWord" field final(òÜ°ßûÿÿÿÿ8Ûµ“Çó.
+J
+java:S1481¦"'Remove this unused "rs" local variable.(ÀÇÄûÿÿÿÿ8ÙÛË“ô.
+Y	java:S125À"<This block of commented-out lines of code should be removed.(¾¡Å×8ÙÛË“ô.
+v
+java:S2293c"YReplace the type specification in this constructor call with the diamond operator ("<>").(º ÓŸ8Ûµ“Çó.
+k	java:S100£"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Âİ¼ú8Ûµ“Çó.
+W
+java:S1141l"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8Ûµ“Çó.
+]	java:S125g"<This block of commented-out lines of code should be removed.(ÔÎ ¿üÿÿÿÿ8Ûµ“Çó.
+[	java:S106¬"9Replace this use of System.out or System.err by a logger.(õ¤Šşûÿÿÿÿ8Ûµ“Çó.
+F
+java:S1444")Make this "public static url" field final(›¢Í‚8Ûµ“Çó.
+e
+java:S2259ª"BA "NullPointerException" could be thrown; "conn" is nullable here.(ÓŒÉÙøÿÿÿÿ8Ûµ“Çó.
+Z	java:S106!"9Replace this use of System.out or System.err by a logger.(“ãÛûÿÿÿÿ8Ûµ“Çó.
+v
+java:S2293i"YReplace the type specification in this constructor call with the diamond operator ("<>").(œÔÑ¸8Ûµ“Çó.
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ú†â8Ûµ“Çó.
+]	java:S125p"<This block of commented-out lines of code should be removed.(ÖÉ›¦ûÿÿÿÿ8Ûµ“Çó.
+j	java:S100T"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Èº„8Ûµ“Çó.
+g	java:S112{"FDefine and throw a dedicated exception instead of using a generic one.(¯åÕøÿÿÿÿ8Ûµ“Çó.
+[	java:S106Ç"9Replace this use of System.out or System.err by a logger.(»Åßğøÿÿÿÿ8ÙÛË“ô.
+]	java:S125}"<This block of commented-out lines of code should be removed.(‹µö·ûÿÿÿÿ8Ûµ“Çó.
