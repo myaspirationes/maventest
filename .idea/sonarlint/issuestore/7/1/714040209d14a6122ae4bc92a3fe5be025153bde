@@ -1,0 +1,18 @@
+
+{
+java:S1488"^Immediately return this expression instead of assigning it to the temporary variable "result".(ÔÑÍ8Çîúøû.
+u
+java:S1128"SRemove this unused import 'com.tngtech.java.junit.dataprovider.DataProviderRunner'.(éÃ­úÿÿÿÿ8¶ûøû.
+R
+java:S1128	"5Remove this unused import 'org.junit.runner.RunWith'.(¸ıºô8¶ûøû.
+J
+java:S1128"(Remove this unused import 'lombok.Data'.(÷í«ÿÿÿÿÿ8ä¸åøû.
+j
+java:S1128"MRemove this unused import 'com.tngtech.java.junit.dataprovider.DataProvider'.(ùıê…8˜¼öøû.
+S
+java:S1128"6Remove this unused import 'lombok.extern.log4j.Log4j'.(ñÔêĞ8ä¸åøû.
+M
+java:S1128"+Remove this unused import 'org.junit.Test'.(ùøèøÿÿÿÿ8‹İöøû.
+r
+java:S1128"PRemove this unused import 'com.tngtech.java.junit.dataprovider.UseDataProvider'.(‰°ùÿÿÿÿÿ8‹İöøû.
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(™“é
