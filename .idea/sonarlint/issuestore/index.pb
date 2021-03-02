@@ -34,6 +34,7 @@ b
 a
 1src/main/java/org/DataProvider/Dataprovidert.java,7\1\714040209d14a6122ae4bc92a3fe5be025153bde
 e
+<<<<<<< HEAD
 5src/test/java/org/DataProvider/DataprovidertTest.java,f\8\f8c5bfb3a42b0967cab6ccc9c2f1f418dd15b95a
 :
 
@@ -44,3 +45,6 @@ S
 maventest.iml,e\4\e4ff6808e5b87315fd291048978fa078babfd27a
 Y
 )src/main/java/org/DB/ValidationUtils.java,4\1\410bb0d308bfec8a53dc7c1bed45880b38746b46
+=======
+5src/test/java/org/DataProvider/DataprovidertTest.java,f\8\f8c5bfb3a42b0967cab6ccc9c2f1f418dd15b95a
+>>>>>>> e292cfc3b22a6153a565639d6eb40f0360099b23
