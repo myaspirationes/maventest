@@ -27,6 +27,12 @@
 
   <dependencies>
 
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- 上边引入 parent，因此下边无需指定版本 -->
     <!-- 包含 mvc,aop 等jar资源 -->
     <dependency>
