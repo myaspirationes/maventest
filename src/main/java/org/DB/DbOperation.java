@@ -9,20 +9,20 @@ import java.util.Map;
 
 public class DbOperation {
 
-    public static String url = "jdbc:mysql://172.16.200.87:3306/nemp";
-    public static String userName = "root";
-    public static String passWord = "CeShi#0301!";
+//    public static String url = "jdbc:mysql://172.16.200.87:3306/nemp";
+//    public static String userName = "root";
+//    public static String passWord = "CeShi#0301!";
 
     /**
      * 链接数据库
      *
      * @return 连接状态
      */
-    public static Connection connection() {
+    public static Connection connection(String url,String userName,String passWord) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Add driver success!");
+            System.out.println("驱动加载成功！ Add driver success!");
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -30,7 +30,7 @@ public class DbOperation {
 
         try {
             Connection conn = DriverManager.getConnection(url, userName, passWord);
-            System.out.println("Connection success!");
+            System.out.println("数据库连接成功！ Connection success!");
             return conn;
 
         } catch (SQLException e) {
@@ -81,13 +81,13 @@ public class DbOperation {
      * @param sql
      * @return
      */
-    public static List<Map<String, Object>> MySqlSelect(String sql) {
+    public static List<Map<String, Object>> MySqlSelect(String url,String userName,String passWord,String sql) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
-            conn = DbOperation.connection();
+            conn = DbOperation.connection(url, userName, passWord);
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsmd = ps.getMetaData();
@@ -133,13 +133,13 @@ public class DbOperation {
      *
      * @param sql
      */
-    public static void MysqlInsert(String sql) {
+    public static void MysqlInsert(String url,String userName,String passWord,String sql) {
         Connection conn = null;
         PreparedStatement pst = null;
         //ResultSet rs = null;
         int lines=0;
         try {
-            conn = DbOperation.connection();
+            conn = DbOperation.connection(url, userName, passWord);
             pst = conn.prepareStatement(sql);
             lines = pst.executeUpdate();
             System.out.println(
@@ -160,16 +160,21 @@ public class DbOperation {
      *
      * @param sql
      */
-    public static void MysqlUpdate(String sql) {
+    public static void MysqlUpdate(String url,String userName,String passWord,String sql) {
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
         int lines=0;
         try {
-            conn = DbOperation.connection();
+            conn = DbOperation.connection(url, userName, passWord);
             pst = conn.prepareStatement(sql);
             lines  = pst.executeUpdate();
-            System.out.println("更新成功！更新"+lines+"条数据");
+            if(lines>0){
+                System.out.println("更新成功！更新"+lines+"条数据");
+            }else {
+                System.out.println("未更新！更新0条数据");
+            }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println("更新失败！");
@@ -185,14 +190,14 @@ public class DbOperation {
      *
      * @param sql
      */
-    public static void MysqlDelete(String sql) {
+    public static void MysqlDelete(String url,String userName,String passWord,String sql) {
 
         Connection conn = null;
         PreparedStatement pst = null;
         //ResultSet rs = null;
         int lines=0;
         try {
-            conn = DbOperation.connection();
+            conn = DbOperation.connection(url, userName, passWord);
             pst = conn.prepareStatement(sql);
             lines = pst.executeUpdate();
 

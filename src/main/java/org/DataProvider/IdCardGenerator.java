@@ -1,5 +1,8 @@
 package org.DataProvider;
 
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
 /**
@@ -7,6 +10,7 @@ import java.util.*;
  * @version 1.0
  * @date 2021/3/2 15:35
  */
+
 public class IdCardGenerator {
 
 

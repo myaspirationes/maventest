@@ -15,6 +15,9 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
+
+        String smsCode =String.valueOf(Math.round(Math.random()*1000000));
+        System.out.println(smsCode);
         assertTrue( true );
     }
 }
