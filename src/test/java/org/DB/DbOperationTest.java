@@ -18,8 +18,6 @@ public class DbOperationTest {
     @Test
     public void MySqlSelectTest() {
 
-
-
         String sql = "SELECT id, ad_name, platform_id, tags, is_global, is_true_name, module_code, show_num\n" +
                 "FROM nemp.advertisement\n" +
                 "WHERE id in(95,89);";

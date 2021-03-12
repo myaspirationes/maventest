@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite">
+    <test name="myparam" preserve-order="true">
+        <parameter name="username" value="mili"/>
+        <parameter name="password" value="123455"/>
+        <classes>
+            <class name="org.Parameter.Parameter" >
+                <methods>
+
+                </methods>
+        </class>
+        </classes>
+    </test>
+
+
+
+     <test name="test1">
+         <groups>
+            <run>
+                <include name="functiontest" />
+             </run>
+         </groups>
+     </test>
+</suite>

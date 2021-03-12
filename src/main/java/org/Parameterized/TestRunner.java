@@ -1,0 +1,21 @@
+package org.Parameterized;
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+/**
+ * @author tiger.wang
+ * @version 1.0
+ * @date 2021/3/11 14:39
+ */
+
+public class TestRunner {
+    public static void main(String[] args) {
+        Result result = JUnitCore.runClasses(PrimeNumberCheckerTest.class);
+        for (Failure failure : result.getFailures()) {
+            System.out.println(failure.toString());
+        }
+        System.out.println(result.wasSuccessful());
+    }
+}

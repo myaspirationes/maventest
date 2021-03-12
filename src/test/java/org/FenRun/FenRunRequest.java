@@ -1,5 +1,7 @@
 package org.FenRun;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.DB.DbOperation;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -28,7 +31,11 @@ public class FenRunRequest {
     static String url="jdbc:mysql://172.16.200.150:3306/opartner?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=Asia/Shanghai";
     static String userName="root";
     static String passWord="CeShi#0301!";
+
+
     public String LoginCookie=null;
+
+
 
     /**
      * 登录获取Cookie，只执行一次
@@ -66,6 +73,10 @@ public class FenRunRequest {
         DbOperation.MysqlDelete(url,userName,passWord, Income_sql);
         DbOperation.MysqlDelete(url,userName,passWord,Wpincome_sql);
     }
+
+
+
+
 
     @Test
     public  void  pagelistTest(){
@@ -115,168 +126,177 @@ public class FenRunRequest {
         //String Cookie= response.getHeaders().get("Set-Cookie").get(0);
         System.out.println(response);
 
+        JSONObject jsonResponse = restTemplate.postForObject(PageListUrl, request, JSONObject.class);
+        System.out.println(jsonResponse);
+
+        System.out.println(jsonResponse.getJSONArray("data").getJSONObject(0).get("id") );
+
+
+        Assert.assertEquals(44,jsonResponse.getJSONArray("data").getJSONObject(0).get("id"));
+        Assert.assertEquals(200,response.getStatusCode().value());
+
     }
 
 
 
 
-//
-//    /**
-//     * 分润基础数据统计
-//     * 参数：id 34
-//     * 参数：executorParam  月份
-//     * 参数：addresslist 可以为空
-//     *
-//     */
-//    @Test
-//    public void FenRun1step(){
-//
-//        String url= "http://172.16.200.215:18010/partner-job/jobinfo/trigger";
-//
-//        HttpHeaders headers=new HttpHeaders();
-//        headers.add("Content-Type","");
-//        headers.add("Cookie",FenRunRequest.login());
-//
-//        MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
-//        body.add("id","34");
-//        body.add("executorParam",2020-12);
-//        body.add("addressList",null);
-//
-//        HttpEntity<String> request= new HttpEntity(body,headers);
-//
-//        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
-//        System.out.println("第一步的响应是：" + response);
-//
-//    }
-//
-//    /**
-//     * 分润定档
-//     * 参数：id 35
-//     * 参数：executorParam  月份
-//     * 参数：addresslist 可以为空
-//     *
-//     */
-//    @Test
-//    public void FenRun2step(){
-//        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
-//
-//        HttpHeaders headers= new HttpHeaders();
-//        headers.add("Cookie",FenRunRequest.login());
-//        headers.add("Content-Type","");
-//
-//        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-//        body.add("id","35");
-//        body.add("executorParam",2020-12);
-//        body.add("addressList",null);
-//
-//        HttpEntity<String> request = new HttpEntity(body,headers);
-//        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
-//        System.out.println(response);
-//    }
-//
-//    /**
-//     * 分润计算
-//     * 参数：id 36
-//     * 参数：executorParam  月份
-//     * 参数：addresslist 可以为空
-//     *
-//     */
-//    @Test
-//    public void FenRun3step(){
-//        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
-//
-//        HttpHeaders headers= new HttpHeaders();
-//        headers.add("Cookie",FenRunRequest.login());
-//        headers.add("Content-Type","");
-//
-//        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-//        body.add("id","36");
-//        body.add("executorParam",2020-12);
-//        body.add("addressList",null);
-//
-//        HttpEntity<String> request = new HttpEntity(body,headers);
-//        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
-//        System.out.println(response);
-//    }
-//
-//
-//    /**
-//     * 旺铺分润基础数据（易多付之后）
-//     * 参数：id 38
-//     * 参数：executorParam  月份
-//     * 参数：addresslist 可以为空
-//     *
-//     */
-//    @Test
-//    public void FenRun4step(){
-//        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
-//
-//        HttpHeaders headers= new HttpHeaders();
-//        headers.add("Cookie",FenRunRequest.login());
-//        headers.add("Content-Type","");
-//
-//        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-//        body.add("id","38");
-//        body.add("executorParam",2020-12);
-//        body.add("addressList",null);
-//
-//        HttpEntity<String> request = new HttpEntity(body,headers);
-//        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
-//        System.out.println(response);
-//    }
-//
-//
-//
-//    /**
-//     * 旺铺分润定档（易多付之后）
-//     * 参数：id 39
-//     * 参数：executorParam  月份
-//     * 参数：addresslist 可以为空
-//     *
-//     */
-//    @Test
-//    public void FenRun5step(){
-//        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
-//
-//        HttpHeaders headers= new HttpHeaders();
-//        headers.add("Cookie",FenRunRequest.login());
-//        headers.add("Content-Type","");
-//
-//        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-//        body.add("id","39");
-//        body.add("executorParam",2020-12);
-//        body.add("addressList",null);
-//
-//        HttpEntity<String> request = new HttpEntity(body,headers);
-//        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
-//        System.out.println(response);
-//    }
-//
-//
-//    /**
-//     * 旺铺分润计算
-//     * 参数：id 40
-//     * 参数：executorParam  月份
-//     * 参数：addresslist 可以为空
-//     *
-//     */
-//    @Test
-//    public void FenRun6step(){
-//        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
-//
-//        HttpHeaders headers= new HttpHeaders();
-//        headers.add("Cookie",FenRunRequest.login());
-//        headers.add("Content-Type","");
-//
-//        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-//        body.add("id","40");
-//        body.add("executorParam",2020-12);
-//        body.add("addressList",null);
-//
-//        HttpEntity<String> request = new HttpEntity(body,headers);
-//        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
-//        System.out.println(response);
-//    }
+
+    /**
+     * 分润基础数据统计
+     * 参数：id 34
+     * 参数：executorParam  月份
+     * 参数：addresslist 可以为空
+     *
+     */
+    @Test
+    public void FenRun1step(){
+
+        String url= "http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+
+        HttpHeaders headers=new HttpHeaders();
+        headers.add("Content-Type","");
+        headers.add("Cookie",LoginCookie);
+
+        MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
+        body.add("id","34");
+        body.add("executorParam",2020-12);
+        body.add("addressList",null);
+
+        HttpEntity<String> request= new HttpEntity(body,headers);
+
+        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        System.out.println("第一步的响应是：" + response);
+
+    }
+
+    /**
+     * 分润定档
+     * 参数：id 35
+     * 参数：executorParam  月份
+     * 参数：addresslist 可以为空
+     *
+     */
+    @Test
+    public void FenRun2step(){
+        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+
+        HttpHeaders headers= new HttpHeaders();
+        headers.add("Cookie",LoginCookie);
+        headers.add("Content-Type","");
+
+        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
+        body.add("id","35");
+        body.add("executorParam",2020-12);
+        body.add("addressList",null);
+
+        HttpEntity<String> request = new HttpEntity(body,headers);
+        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        System.out.println(response);
+    }
+
+    /**
+     * 分润计算
+     * 参数：id 36
+     * 参数：executorParam  月份
+     * 参数：addresslist 可以为空
+     *
+     */
+    @Test
+    public void FenRun3step(){
+        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+
+        HttpHeaders headers= new HttpHeaders();
+        headers.add("Cookie",LoginCookie);
+        headers.add("Content-Type","");
+
+        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
+        body.add("id","36");
+        body.add("executorParam",2020-12);
+        body.add("addressList",null);
+
+        HttpEntity<String> request = new HttpEntity(body,headers);
+        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        System.out.println(response);
+    }
+
+
+    /**
+     * 旺铺分润基础数据（易多付之后）
+     * 参数：id 38
+     * 参数：executorParam  月份
+     * 参数：addresslist 可以为空
+     *
+     */
+    @Test
+    public void FenRun4step(){
+        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+
+        HttpHeaders headers= new HttpHeaders();
+        headers.add("Cookie",LoginCookie);
+        headers.add("Content-Type","");
+
+        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
+        body.add("id","38");
+        body.add("executorParam",2020-12);
+        body.add("addressList",null);
+
+        HttpEntity<String> request = new HttpEntity(body,headers);
+        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        System.out.println(response);
+    }
+
+
+
+    /**
+     * 旺铺分润定档（易多付之后）
+     * 参数：id 39
+     * 参数：executorParam  月份
+     * 参数：addresslist 可以为空
+     *
+     */
+    @Test
+    public void FenRun5step(){
+        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+
+        HttpHeaders headers= new HttpHeaders();
+        headers.add("Cookie",LoginCookie);
+        headers.add("Content-Type","");
+
+        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
+        body.add("id","39");
+        body.add("executorParam",2020-12);
+        body.add("addressList",null);
+
+        HttpEntity<String> request = new HttpEntity(body,headers);
+        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        System.out.println(response);
+    }
+
+
+    /**
+     * 旺铺分润计算
+     * 参数：id 40
+     * 参数：executorParam  月份
+     * 参数：addresslist 可以为空
+     *
+     */
+    @Test
+    public void FenRun6step(){
+        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+
+        HttpHeaders headers= new HttpHeaders();
+        headers.add("Cookie",LoginCookie);
+        headers.add("Content-Type","");
+
+        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
+        body.add("id","40");
+        body.add("executorParam",2020-12);
+        body.add("addressList",null);
+
+        HttpEntity<String> request = new HttpEntity(body,headers);
+        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        System.out.println(response);
+    }
 
     @Test
     public void time(){
@@ -293,6 +313,32 @@ public class FenRunRequest {
         System.out.println(start);
 
 
+    }
+
+
+    /**
+     * 手动添加对象到一个JSONObject
+     */
+    @Test
+    private  void writeStrToJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name","tom");
+        jsonObject.put("age",20);
+
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonArrayObject1 = new JSONObject();
+        jsonArrayObject1.put("name","alibaba");
+        jsonArrayObject1.put("info","www.alibaba.com");
+        JSONObject jsonArrayObject2 = new JSONObject();
+        jsonArrayObject2.put("name","baidu");
+        jsonArrayObject2.put("info","www.baidu.com");
+
+        jsonArray.add(jsonArrayObject1);
+        jsonArray.add(jsonArrayObject2);
+
+        jsonObject.put("sites",jsonArray);
+
+        System.out.println(jsonObject);
     }
 
 }

@@ -6,8 +6,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * @author tiger.wang
  * @version 1.0
@@ -29,6 +27,8 @@ public class DataprovidertTest {
             String url = "https://blog.51cto.com/357712148/" + param[i];
             result[k++] = new Object[]{url};
         }
+        //System.out.println(Arrays.stream(result).findFirst().toString());
+
         return result;
     }
 
