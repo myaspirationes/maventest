@@ -61,7 +61,7 @@ public class HttpRequest {
         //header.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Accept", "application/json;charset=UTF-8");
         headers.add("cookie", "__snaker__id=ui630Gz1SAdqv8Bl; JSESSIONID=967D7F27DFF98D1EC9F2F8BFB8CA3FE7; gdxidpyhxdE=xlNw%2Bd0r47VR8WODMTRTJ4YTCGG4%2F60Dz5IA%5CdXhDBfrBLg2YBr9EW%2B6LWW9YZSKa90Dn4eilTlmeA2jcWVACQkx%5CRmLkxucCOVZnpGctWiVv8KicIoz%2FsjNXsLaxMzPpvLyQ29n3GXe8Y74%5CD%2Bo5hBqAx%2Fbqvpgyy6J0wGRcrrqB%2Fr2%3A1611735610251; _9755xjdesxxd_=32; YD00938875056089%3AWM_NI=tw%2BTdaFNblUY8TtKI3%2BtSk3etdT2wWceRAEfiiXEMv1UeV83j1cwCLEg6OB%2Bc6Du0EW7NodaVH%2FdkqswSR9eoGCk6n1QOJcJpmHQfrK8uruXwnjg8IhbKju10E3ygWBWT2I%3D; YD00938875056089%3AWM_NIKE=9ca17ae2e6ffcda170e2e6ee8ded5b9b90bcafbb6fb89e8aa6d85b828b8e85ae41bb8f96daaa25f5b9ff84d22af0fea7c3b92ab8a9e5b5e76b8692ae8dd853fc8cbcaccc39e9ac9d8cb26fb8bc9cd3f65da1bb9ea2c86eabb798a6d07ef38babb7bb39aaefad98c24887b9fab0c121a1ea8c96b34f95e98290e76b9698e185ea7bb1a99db3bc6fad998d8cb566f38f81abe242b4b388b2e57a89e8bb93f854b5b2a688bb43acbe858bf83bf49bfd9ae65d82899cd3cc37e2a3; YD00938875056089%3AWM_TID=77TIXcr9iuxEURERVVZ%2Bb2QY8vuq01dS");
-        headers.add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        headers.add("Content-Type", "application/json; charset=UTF-8");
 
         JSONObject jsonBody = new JSONObject();
 

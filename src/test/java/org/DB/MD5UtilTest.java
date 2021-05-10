@@ -2,8 +2,6 @@ package org.DB;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * @author tiger.wang
  * @version 1.0
@@ -19,6 +17,14 @@ public class MD5UtilTest {
         System.out.println(MD5Util.getMD5(ss));
 
 
+    }
+@Test
+    public  void getCurrentTime(){
+
+        long date=System.currentTimeMillis();
+        String time=date+"";
+        System.out.println(time);
+        //return  time;
     }
 
 

@@ -16,6 +16,8 @@ import org.testng.annotations.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author tiger.wang
@@ -26,78 +28,76 @@ public class FenRunRequest {
 
 
     private static RestTemplate restTemplate = new RestTemplate();
-    static String  LoginUrl="http://172.16.200.215:18010/partner-job/login";
-    static String PageListUrl= "http://172.16.200.215:18010/partner-job/jobinfo/pageList";
-    static String url="jdbc:mysql://172.16.200.150:3306/opartner?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=Asia/Shanghai";
-    static String userName="root";
-    static String passWord="CeShi#0301!";
+
+    static String LoginUrl = "http://172.16.200.215:18010/partner-job/login";
+    static String PageListUrl = "http://172.16.200.215:18010/partner-job/jobinfo/pageList";
+    static String url = "jdbc:mysql://172.16.200.150:3306/opartner?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=Asia/Shanghai";
+    static String userName = "root";
+    static String passWord = "CeShi#0301!";
 
 
-    public String LoginCookie=null;
-
+    public String LoginCookie = null;
 
 
     /**
      * 登录获取Cookie，只执行一次
-     *若果采用测试方法调用这个方法，则不必注解为@BeforeClass，但要声明为static
+     * 若果采用测试方法调用这个方法，则不必注解为@BeforeClass，但要声明为static
+     *
      * @return 登录Cookie
      */
-    @BeforeClass
-    public  void  login(){
-        HttpHeaders headers= new HttpHeaders();
+    @BeforeClass()
+    public void login() {
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
+        headers.add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
         //HashMap<String,String> body =new HashMap();
-        MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
-        body.add("userName","userbai");
-        body.add("password",123456);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("userName", "userbai");
+        body.add("password", 123456);
 
-        HttpEntity<String> request = new HttpEntity(body,headers);
+        HttpEntity<String> request = new HttpEntity(body, headers);
 
-        ResponseEntity<String> response= restTemplate.postForEntity(LoginUrl,request,String.class);
-        String loginCookie= response.getHeaders().get("Set-Cookie").get(0);//获取响应头中的cookie
-        System.out.println("获取的cookie 是 ："+loginCookie);
+        ResponseEntity<String> response = restTemplate.postForEntity(LoginUrl, request, String.class);
+        String loginCookie = response.getHeaders().get("Set-Cookie").get(0);//获取响应头中的cookie
+        System.out.println("获取的cookie 是 ：" + loginCookie);
         LoginCookie = loginCookie;
     }
 
     /**
      * 先清空两张表 opartner.income 和 opartner.wpincome
-     *只执行一次
+     * 只执行一次
      */
     @BeforeClass
-    public static void deleteData(){
+    public static void deleteData() {
         String Income_sql = "delete  from opartner.income ";
         String Wpincome_sql = "delete  from opartner.wpincome ";
 
-        DbOperation.MysqlDelete(url,userName,passWord, Income_sql);
-        DbOperation.MysqlDelete(url,userName,passWord,Wpincome_sql);
+        DbOperation.MysqlDelete(url, userName, passWord, Income_sql);
+        DbOperation.MysqlDelete(url, userName, passWord, Wpincome_sql);
     }
 
 
-
-
-
     @Test
-    public  void  pagelistTest(){
+    public void pagelistTest() {
 
-        HttpHeaders headers= new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
+        headers.add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         //headers.add("Cookie",FenRunRequest.login());
-        headers.add("Cookie",LoginCookie);
+        headers.add("Cookie", LoginCookie);
         //HashMap<String,String> body =new HashMap();
-        MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
-        body.add("jobGroup",4);
-        body.add("triggerStatus",-1);
-        body.add("jobDesc",null);
-        body.add("executorHandler",null);
-        body.add("start",0);
-        body.add("length",10);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("jobGroup", 4);
+        body.add("triggerStatus", -1);
+        body.add("jobDesc", null);
+        body.add("executorHandler", null);
+        body.add("start", 0);
+        body.add("length", 10);
 
-        HttpEntity<String> request = new HttpEntity(body,headers);
+        HttpEntity<String> request = new HttpEntity(body, headers);
 
-        ResponseEntity<String> response= restTemplate.postForEntity(PageListUrl,request,String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(PageListUrl, request, String.class);
         //String Cookie= response.getHeaders().get("Set-Cookie").get(0);
         System.out.println(response);
 
@@ -105,40 +105,37 @@ public class FenRunRequest {
 
 
     @Test
-    public  void  pagelistTest50(){
+    public void pagelistTest50() {
 
-        HttpHeaders headers= new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
-        headers.add("Cookie",LoginCookie);
+        headers.add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        headers.add("Cookie", LoginCookie);
         //HashMap<String,String> body =new HashMap();
-        MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
-        body.add("jobGroup",4);
-        body.add("triggerStatus",-1);
-        body.add("jobDesc",null);
-        body.add("executorHandler",null);
-        body.add("start",0);
-        body.add("length",50);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("jobGroup", 4);
+        body.add("triggerStatus", -1);
+        body.add("jobDesc", null);
+        body.add("executorHandler", null);
+        body.add("start", 0);
+        body.add("length", 50);
 
-        HttpEntity<String> request = new HttpEntity(body,headers);
+        HttpEntity<String> request = new HttpEntity(body, headers);
 
-        ResponseEntity<String> response= restTemplate.postForEntity(PageListUrl,request,String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(PageListUrl, request, String.class);
         //String Cookie= response.getHeaders().get("Set-Cookie").get(0);
         System.out.println(response);
 
         JSONObject jsonResponse = restTemplate.postForObject(PageListUrl, request, JSONObject.class);
         System.out.println(jsonResponse);
 
-        System.out.println(jsonResponse.getJSONArray("data").getJSONObject(0).get("id") );
+        System.out.println(jsonResponse.getJSONArray("data").getJSONObject(0).get("id"));
 
 
-        Assert.assertEquals(44,jsonResponse.getJSONArray("data").getJSONObject(0).get("id"));
-        Assert.assertEquals(200,response.getStatusCode().value());
+        Assert.assertEquals(44, jsonResponse.getJSONArray("data").getJSONObject(0).get("id"));
+        Assert.assertEquals(200, response.getStatusCode().value());
 
     }
-
-
-
 
 
     /**
@@ -146,25 +143,24 @@ public class FenRunRequest {
      * 参数：id 34
      * 参数：executorParam  月份
      * 参数：addresslist 可以为空
-     *
      */
     @Test
-    public void FenRun1step(){
+    public void FenRun1step() {
 
-        String url= "http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+        String url = "http://172.16.200.215:18010/partner-job/jobinfo/trigger";
 
-        HttpHeaders headers=new HttpHeaders();
-        headers.add("Content-Type","");
-        headers.add("Cookie",LoginCookie);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "");
+        headers.add("Cookie", LoginCookie);
 
-        MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
-        body.add("id","34");
-        body.add("executorParam",2020-12);
-        body.add("addressList",null);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("id", "34");
+        body.add("executorParam", 2020 - 12);
+        body.add("addressList", null);
 
-        HttpEntity<String> request= new HttpEntity(body,headers);
+        HttpEntity<String> request = new HttpEntity(body, headers);
 
-        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
         System.out.println("第一步的响应是：" + response);
 
     }
@@ -174,23 +170,22 @@ public class FenRunRequest {
      * 参数：id 35
      * 参数：executorParam  月份
      * 参数：addresslist 可以为空
-     *
      */
     @Test
-    public void FenRun2step(){
-        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+    public void FenRun2step() {
+        String url = "http://172.16.200.215:18010/partner-job/jobinfo/trigger";
 
-        HttpHeaders headers= new HttpHeaders();
-        headers.add("Cookie",LoginCookie);
-        headers.add("Content-Type","");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", LoginCookie);
+        headers.add("Content-Type", "");
 
-        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-        body.add("id","35");
-        body.add("executorParam",2020-12);
-        body.add("addressList",null);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("id", "35");
+        body.add("executorParam", 2020 - 12);
+        body.add("addressList", null);
 
-        HttpEntity<String> request = new HttpEntity(body,headers);
-        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        HttpEntity<String> request = new HttpEntity(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
         System.out.println(response);
     }
 
@@ -199,24 +194,53 @@ public class FenRunRequest {
      * 参数：id 36
      * 参数：executorParam  月份
      * 参数：addresslist 可以为空
-     *
      */
     @Test
-    public void FenRun3step(){
-        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+    public void FenRun3step() {
+        String url = "http://172.16.200.215:18010/partner-job/jobinfo/trigger";
 
-        HttpHeaders headers= new HttpHeaders();
-        headers.add("Cookie",LoginCookie);
-        headers.add("Content-Type","");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", LoginCookie);
+        headers.add("Content-Type", "");
 
-        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-        body.add("id","36");
-        body.add("executorParam",2020-12);
-        body.add("addressList",null);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("id", "36");
+        body.add("executorParam", 2020 - 12);
+        body.add("addressList", null);
 
-        HttpEntity<String> request = new HttpEntity(body,headers);
-        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        HttpEntity<String> request = new HttpEntity(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
         System.out.println(response);
+    }
+
+
+//    SELECT id, createTime, updateTime, incomeDate, partnerId, agent, referKey, realname, firstInstitutionId, fixedTransSum, fixedTransCount, reckonT0Money, reckonT0Count, reckonUPST0Money, reckonUPST0Count, reckonSCANMoney, reckonSCANCount, t0Ratio, upsT0Ratio, scanRatio, fixedGrade, vnum, t0BaseMoney, upsBaseMoney, scanBaseMoney, manageMoney, allMoney, taxAllMoney, taxMoney, incomeStatus, errorInfo, giveFlag, selfTransactionsNum, selfTransactionMoney, selfT0Money, selfUPST0Money, selfUPST0Count, selfT0Count, selfSCANMoney, selfSCANCount, subsetTransactionNum, subsetTransactionMoney, subsetT0Money, subsetUPST0Count, subsetT0Count, subsetUPST0Money, subsetSCANCount, subsetSCANMoney, machineSum, partnerGrade
+//    FROM partner.income
+//    WHERE id=2237;
+
+    /**
+     * 分润跑批后检查分润金额是否计算正确
+     * <p>
+     * 坑，sql 只查询一列没有数据
+     */
+
+    @Test
+    public void checkIncome() {
+
+        String sql = "SELECT allMoney,realname FROM partner.income WHERE id=2237";
+        String url = "jdbc:mysql://172.16.200.81:3306/partner?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=Asia/Shanghai";
+
+        String userName = "mpay2";
+        String passWord = "User1#@18.05.25";
+
+        List<Map<String, Object>> searchResults = DbOperation.MySqlSelect(url, userName, passWord, sql);
+        for (int i = 0; i < searchResults.size(); i++) {
+            Map<String, Object> map = searchResults.get(i);
+            System.out.println(map.get("allMoney"));
+            Double money = (Double) map.get("allMoney");
+            Assert.assertEquals(479.26, money, "似乎错了× ，请检查");
+        }
+
     }
 
 
@@ -225,26 +249,24 @@ public class FenRunRequest {
      * 参数：id 38
      * 参数：executorParam  月份
      * 参数：addresslist 可以为空
-     *
      */
     @Test
-    public void FenRun4step(){
-        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+    public void FenRun4step() {
+        String url = "http://172.16.200.215:18010/partner-job/jobinfo/trigger";
 
-        HttpHeaders headers= new HttpHeaders();
-        headers.add("Cookie",LoginCookie);
-        headers.add("Content-Type","");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", LoginCookie);
+        headers.add("Content-Type", "");
 
-        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-        body.add("id","38");
-        body.add("executorParam",2020-12);
-        body.add("addressList",null);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("id", "38");
+        body.add("executorParam", 2020 - 12);
+        body.add("addressList", null);
 
-        HttpEntity<String> request = new HttpEntity(body,headers);
-        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        HttpEntity<String> request = new HttpEntity(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
         System.out.println(response);
     }
-
 
 
     /**
@@ -252,23 +274,22 @@ public class FenRunRequest {
      * 参数：id 39
      * 参数：executorParam  月份
      * 参数：addresslist 可以为空
-     *
      */
     @Test
-    public void FenRun5step(){
-        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+    public void FenRun5step() {
+        String url = "http://172.16.200.215:18010/partner-job/jobinfo/trigger";
 
-        HttpHeaders headers= new HttpHeaders();
-        headers.add("Cookie",LoginCookie);
-        headers.add("Content-Type","");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", LoginCookie);
+        headers.add("Content-Type", "");
 
-        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-        body.add("id","39");
-        body.add("executorParam",2020-12);
-        body.add("addressList",null);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("id", "39");
+        body.add("executorParam", 2020 - 12);
+        body.add("addressList", null);
 
-        HttpEntity<String> request = new HttpEntity(body,headers);
-        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        HttpEntity<String> request = new HttpEntity(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
         System.out.println(response);
     }
 
@@ -278,35 +299,34 @@ public class FenRunRequest {
      * 参数：id 40
      * 参数：executorParam  月份
      * 参数：addresslist 可以为空
-     *
      */
     @Test
-    public void FenRun6step(){
-        String url="http://172.16.200.215:18010/partner-job/jobinfo/trigger";
+    public void FenRun6step() {
+        String url = "http://172.16.200.215:18010/partner-job/jobinfo/trigger";
 
-        HttpHeaders headers= new HttpHeaders();
-        headers.add("Cookie",LoginCookie);
-        headers.add("Content-Type","");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", LoginCookie);
+        headers.add("Content-Type", "");
 
-        MultiValueMap<String,Object> body= new LinkedMultiValueMap<>();
-        body.add("id","40");
-        body.add("executorParam",2020-12);
-        body.add("addressList",null);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("id", "40");
+        body.add("executorParam", 2020 - 12);
+        body.add("addressList", null);
 
-        HttpEntity<String> request = new HttpEntity(body,headers);
-        ResponseEntity<String> response= restTemplate.postForEntity(url,request,String.class);
+        HttpEntity<String> request = new HttpEntity(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
         System.out.println(response);
     }
 
     @Test
-    public void time(){
-        Date now= new Date();
+    public void time() {
+        Date now = new Date();
 
-        SimpleDateFormat ft=new SimpleDateFormat();
-        String time= ft.format(now);
+        SimpleDateFormat ft = new SimpleDateFormat();
+        String time = ft.format(now);
         System.out.printf(time);
         System.out.println();
-        System.out.printf("%tb%n",now);
+        System.out.printf("%tb%n", now);
         System.out.println(now);
 
         long start = System.currentTimeMillis();
@@ -317,26 +337,26 @@ public class FenRunRequest {
 
 
     /**
-     * 手动添加对象到一个JSONObject
+     * 手动添加嵌套对象到一个JSONObject
      */
-    @Test
-    private  void writeStrToJSONObject() {
+    @Test(enabled = true)
+    public void writeStrToJSONObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("name","tom");
-        jsonObject.put("age",20);
+        jsonObject.put("name", "tom");
+        jsonObject.put("age", 20);
 
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonArrayObject1 = new JSONObject();
-        jsonArrayObject1.put("name","alibaba");
-        jsonArrayObject1.put("info","www.alibaba.com");
+        jsonArrayObject1.put("name", "alibaba");
+        jsonArrayObject1.put("info", "www.alibaba.com");
         JSONObject jsonArrayObject2 = new JSONObject();
-        jsonArrayObject2.put("name","baidu");
-        jsonArrayObject2.put("info","www.baidu.com");
+        jsonArrayObject2.put("name", "baidu");
+        jsonArrayObject2.put("info", "www.baidu.com");
 
         jsonArray.add(jsonArrayObject1);
         jsonArray.add(jsonArrayObject2);
 
-        jsonObject.put("sites",jsonArray);
+        jsonObject.put("sites", jsonArray);
 
         System.out.println(jsonObject);
     }
