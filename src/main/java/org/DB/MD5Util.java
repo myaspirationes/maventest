@@ -26,6 +26,15 @@ public class MD5Util {
             return md5;
         }
 
+    public static String getMD5test(String str) {
+        //String base = str +"/"+slat;//加盐
+        String base = str ;
+
+        String md5 = "e10adc3949ba59abbe56e057f20f883e";
+        return md5;
+    }
+
+
     }
 
 

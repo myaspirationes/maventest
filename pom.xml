@@ -7,6 +7,7 @@
   <groupId>org.example</groupId>
   <artifactId>maventest</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
   <name>maventest</name>
   <!-- FIXME change it to the project's website -->
@@ -16,6 +17,17 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!--此路径用于存储JMeter的原生测试结果文件，比如csv或者jtl-->
+    <jmeter.result.jtl.dir>${project.build.directory}\jmeter\results</jmeter.result.jtl.dir>
+    <!--此路径用于存储由模板转换过来的详细的测试结果的html文件-->
+    <jmeter.result.html.dir>${project.build.directory}\jmeter\html_detail_report</jmeter.result.html.dir>
+    <!--此路径用于存储由模板转换过来的测试结果的html文件-->
+    <jmeter.result.html.dir1>${project.build.directory}\jmeter\html_report</jmeter.result.html.dir1>
+    <ReportName>TestReport</ReportName>
+
   </properties>
 
   <parent>
@@ -189,11 +201,146 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.lazerycode.jmeter/jmeter-maven-plugin -->
+    <dependency>
+      <groupId>com.lazerycode.jmeter</groupId>
+      <artifactId>jmeter-maven-plugin</artifactId>
+      <version>3.3.0</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>saxon</artifactId>
+      <version>8.7</version>
+    </dependency>
+
+
+
+
+
+
+
   </dependencies>
 
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
+
+
+
+        <plugin>
+          <!--核心插件，用于将Apache JMeter集成到Maven中-->
+          <groupId>com.lazerycode.jmeter</groupId>
+          <artifactId>jmeter-maven-plugin</artifactId>
+          <version>3.0.0</version>
+          <configuration>
+
+            <!-- 指定jmeter版本 -->
+            <jmeterVersion>5.4</jmeterVersion>
+
+            <!--JMeter能够创建.jtl（XML格式）测试结果和csv测试结果。
+            默认情况下，此插件使用csv格式。这里需要将其切换为xml格式。-->
+            <resultsFileFormat>xml</resultsFileFormat>
+            <!--这里是否生成result report需要设置为false，否则运行时会出现“前言中不允许有内容”的报错。
+            因为若该项为true，无论你在.properties配置文件或者此pom文件中将结果文件的格式显示设置为xml，最后都只会生成csv的结果文件。
+            而csv的格式无法转换成我们最后要的html结果文件，就会报上述的错。-->
+            <generateReports>false</generateReports>
+            <!--忽略失败-->
+            <ignoreResultFailures>true</ignoreResultFailures>
+            <!--为结果文件添加时间戳-->
+            <testResultsTimestamp>true</testResultsTimestamp>
+            <!--指定日志级别-->
+            <overrideRootLogLevel>debug</overrideRootLogLevel>
+            <!--指定运行的jmeter脚本-->
+            <testFilesIncluded>jdbc.jmx</testFilesIncluded>
+            <!--指定不需要运行的jmeter脚本-->
+            <!--testFilesExcluded>aaa.jmx</testFilesExcluded-->
+          </configuration>
+          <executions>
+            <execution>
+              <id>jmeter-tests</id>
+              <goals>
+                <goal>jmeter</goal>
+              </goals>
+              <phase>integration-test</phase>
+            </execution>
+            <!-- 设置ignoreResultFailures，必须把 jmeter-check-results加上-->
+            <execution>
+              <id>jmeter-check-results</id>
+              <goals>
+                <goal>results</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>configuration</id>
+              <goals>
+                <goal>configure</goal>
+              </goals>
+            </execution>
+
+
+          </executions>
+        </plugin>
+
+        <plugin>
+          <!--根据xsl模版把jtl文件转换成html -->
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>xml-maven-plugin</artifactId>
+          <version>1.0.2</version>
+          <executions>
+            <execution>
+              <phase>verify</phase>
+              <goals>
+                <goal>transform</goal>
+              </goals>
+            </execution>
+
+          </executions>
+          <configuration>
+            <transformationSets>
+              <transformationSet>
+                <dir>${jmeter.result.jtl.dir}</dir>
+                <stylesheet>src\test\resources\jmeter-results-report_21.xsl</stylesheet>
+                <outputDir>${jmeter.result.html.dir}</outputDir>
+                <!-- 把jtl格式转传承html -->
+                <fileMappers>
+                  <fileMapper
+                          implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                    <targetExtension>html</targetExtension>
+                  </fileMapper>
+                </fileMappers>
+              </transformationSet>
+              <transformationSet>
+                <dir>${jmeter.result.jtl.dir}</dir>
+                <stylesheet>src\test\resources\jmeter-results-detail-report_21.xsl</stylesheet>
+                <outputDir>${jmeter.result.html.dir1}</outputDir>
+                <!-- 把jtl格式转传承html -->
+                <fileMappers>
+                  <fileMapper
+                          implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                    <targetExtension>html</targetExtension>
+                  </fileMapper>
+                </fileMappers>
+              </transformationSet>
+            </transformationSets>
+          </configuration>
+          <!-- using XSLT 2.0 -->
+
+        </plugin>
+
+
+
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <testFailureIgnore>true</testFailureIgnore>
+          </configuration>
+        </plugin>
+
+
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
@@ -208,10 +355,7 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
         </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
+
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
@@ -233,6 +377,7 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+
 
         <plugin>
           <groupId>org.jacoco</groupId>

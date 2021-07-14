@@ -40,9 +40,8 @@ public class MockTest {
     public void testpw(){
         PowerMockito.mockStatic(BeMocked.class);//mock类中的静态方法
         PowerMockito.when(beMocked.add()).thenReturn(7);//mock该方法，返回指定的值
-
-        Assert.assertEquals(35, useMock.addtest());
+        System.out.println("useMock = " + useMock);
+        Assert.assertEquals(325, useMock.addtest());
     }
-
 
 }

@@ -1,6 +1,5 @@
 package org.Mock;
 
-import org.Mock.BeMocked;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

@@ -21,6 +21,7 @@ import javax.crypto.spec.IvParameterSpec;
 import java.security.Key;
 import java.util.*;
 
+
 /**
  * @author tiger.wang
  * @version 1.0
@@ -38,6 +39,7 @@ public class XiaoWo {
     private final static String iv = "01234567";
     // 加解密统一使用的编码方式
     private final static String encoding = "utf-8";
+
     private String client_token = "7D54C61F45C2C691";
     private String server_token = "3F2C439E9F84B313";
     private String wordkKey = TypeConvert.xorTwoStrings(client_token, server_token);
@@ -369,6 +371,11 @@ public class XiaoWo {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public static void main(String[] args) {
+
+
     }
 
 }

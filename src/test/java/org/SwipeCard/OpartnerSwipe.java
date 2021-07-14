@@ -93,6 +93,8 @@ public class OpartnerSwipe {
         System.out.println("时间：" + time + " 生产者 发送 ：" + message);
         channel.close();
         connection.close();
+
+
     }
 
 

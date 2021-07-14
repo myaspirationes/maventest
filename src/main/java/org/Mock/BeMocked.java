@@ -8,10 +8,16 @@ package org.Mock;
 public class BeMocked {
 
     public static int add() {
-//        int a = 1;
-//        int b = 2;
-//        int sum = a + b;
-        return 0;
-    }
+//        int a=3;
+//        if (a == 1) {
+//            return 0;
+//        } else if (a==0) {
+//            return 1;
+//        }else {
+//            return 2;
+//        }
+
+   // }
+        return 66664;}
 
 }

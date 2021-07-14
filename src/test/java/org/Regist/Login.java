@@ -29,7 +29,7 @@ public class Login {
     private static RestTemplate restTemplate = new RestTemplate();
     private static String URL = "http://ysf.worthinfo.cn/oemp/app/1.0/";
 
-    /***
+    /**
      * 连接数据库
      */
     DbOperation db = new DbOperation();
@@ -827,6 +827,8 @@ public class Login {
 
 
 
+
+
     /**
      * 在dly系统中沉默用户，能注册
      */
@@ -836,7 +838,7 @@ public class Login {
 
         String registURL = URL + "register.do";
 
-        /*  待注册的手机号 是否已注册 */
+        /*  待注册的手机号  */
         String tel = "15921401883";
 
         String sql = "SELECT \n" +
@@ -942,7 +944,121 @@ public class Login {
      * 在spos系统中是激活用户，在nemp-saas中是白名单用户，能注册
      */
     @Test
-    public void spos_WhiteUserRegistTest(){}
+    public void spos_White_UserRegistTest(){
+
+
+
+
+        String registURL = URL + "register.do";
+
+        /*  待注册的手机号 是否已注册 */
+        String tel = "17786869898";
+        /*  查询是否白名单中  */
+        String sql = "SELECT\n" +
+                " count(*) as count,  channel_code,create_time,update_time,\n" +
+                "CAST( AES_DECRYPT( UNHEX( man_id_card ), '1qaz2WSX3edc' ) AS CHAR ) ID,\n" +
+                "CAST( AES_DECRYPT( UNHEX( man_name ), '1qaz2WSX3edc' ) AS CHAR ) name,\n" +
+                "CAST( AES_DECRYPT( UNHEX( man_tel ), '1qaz2WSX3edc' ) AS CHAR ) tel\n" +
+                "FROM\n" +
+                "`nemp-saas`.customer_white_list where man_tel = HEX(AES_ENCRYPT("+tel+",'1qaz2WSX3edc'));\n";;
+        //String deleteTel="delete from  `nemp-saas`.customer where code = hex(AES_ENCRYPT('" + tel + "', '1qaz2WSX3edc'));";
+        System.out.println(sql);
+        List<Map<String, Object>> selectResult = db.MySqlSelect(nemp_saas_url, mysql_userName, mysql_passWord, sql);
+        //System.out.println(selectResult.get(0).get("count"));
+        //System.out.println(selectResult.get(0).get("code"));
+
+        int count_ysf= Integer.valueOf(selectResult.get(0).get("count").toString()).intValue();
+        //int silent_status=  Integer.valueOf(selectResult.get(0).get("negativeFlag").toString()).intValue();
+        //String telephone=  selectResult.get(0).get("tel").toString();
+
+        if (count_ysf > 0 ){
+            System.out.println("手机号在壹生付系统中,是白名单用户！！！");
+            // db.MysqlDelete(nemp_saas_url, mysql_userName, mysql_passWord, deleteTel);
+
+        }else{
+
+            System.out.println("手机号在壹生付系统中,不是白名单用户,请检查！！！");
+            //System.out.println("手机号不在系统中or 非沉默用户,请检查！！！");
+            return;
+        }
+
+
+        Long timeStamp = System.currentTimeMillis();
+        String timeStp = timeStamp + "";
+        String STR = timeStamp + "1qaz2wsx1qaz2wsx";
+        String message = Sha256.getSHA256(STR);
+        //System.out.println("message" + message);
+
+        String pwd = "2020qwas";
+        String password = EncryptUtil.sha1Encrypt(pwd);
+
+        /*  32位随机数 */
+        String random = UUIDUtil.get32UUID().toUpperCase();
+
+        String encodeTel = null;
+        try {
+            encodeTel = RSAUtils.getsec(tel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        /*  手机号加密为参数sign*/
+        String sign = EncryptUtil.md5Encrypt(tel + "handbrush");
+
+        Map<String, String> msgCodeMap = Login.getMsgCheckCode(tel);
+        String msgCode = msgCodeMap.get("msgCheck_code");
+        String key = msgCodeMap.get("key");
+        //String msg=msgCodeMap.get("msg");
+
+        String param = "app_down_platform=appstore&app_id=APP&appid=APP&check_code=" + msgCode + "&i_version=1.0.0&oen_id=2&password=" + password + "&platform_id=ios&random_str=" + random + "&sign=" + sign + "&tel=" + tel + "&timestamp=" + timeStp;
+
+        String sign_Hash = Sha256.getSHA256(param).toUpperCase();
+        //System.out.println("加密后signHash：" + sign_Hash);
+        String p = param + "&sign_hash=" + sign_Hash;
+        //System.out.println("连接后待加密字符串p：" + p);
+
+        /*  拼接参数后再加密 key是token接口返回的tt */
+        String enBody = null;
+        try {
+            //System.out.println("加密前p：" + p);
+            enBody = TDES_3DESUtil.encode(p, key);
+            System.out.println("加密后p：" + enBody);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+        headers.add("random_str", timeStp);
+        headers.add("app_id", "APP");
+        headers.add("message", message);
+        headers.add("appId", "APP");
+        headers.add("channelCode", "111");
+
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("p", enBody);
+        body.add("q", encodeTel);
+
+        HttpEntity<String> request = new HttpEntity(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(registURL, request, String.class);
+        //System.out.println(response.getBody());
+        String loginSuccessMsg = JSONObject.parseObject(response.getBody()).getString("msg");
+        //System.out.println(loginSuccessMsg);
+        String loginSuccessRet = JSONObject.parseObject(response.getBody()).getString("ret");
+
+        Assert.assertEquals("断言1：", "success", loginSuccessMsg);
+        Assert.assertEquals("断言2：", "00", loginSuccessRet);
+
+
+
+
+
+
+
+
+
+    }
 
 
     /**
@@ -1010,6 +1126,94 @@ public class Login {
 
         HttpEntity<String> request = new HttpEntity(body, headers);
         ResponseEntity<String> response = restTemplate.postForEntity(loginUrl, request, String.class);
+        System.out.println(response);
+        String loginSuccessBody = JSONObject.parseObject(response.getBody()).getString("body");
+        System.out.println(loginSuccessBody);
+
+        String loginName = null;
+        String loginMsg = null;
+        try {
+            String deResponse = TDES_3DESUtil.decode(loginSuccessBody, key);
+            System.out.println(deResponse);
+            loginName = JSON.parseObject(deResponse).getJSONObject("user").get("manName").toString();
+            loginMsg = JSON.parseObject(deResponse).get("msg").toString();
+            System.out.println(loginName);
+            System.out.println(loginMsg);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(loginName, "汪小明");
+        Assert.assertEquals(loginMsg, "已经实名认证");
+    }
+
+
+    /**
+     * 非实名认证用户登录
+     */
+    @Test
+    public void unCertificationUserloginTest(){
+
+        String loginUrl = URL + "login.do";
+
+        Long timeStamp = System.currentTimeMillis();
+        String timeStp = timeStamp + "";
+        /*  登录的手机号 */
+        String tel = "13817391487";
+        String pwd = "123456xy";
+        String password = EncryptUtil.sha1Encrypt(pwd);
+        //System.out.println("password:" + password);
+        String STR = timeStamp + "1qaz2wsx1qaz2wsx";
+        //System.out.println("时间戳" + STR);
+        String message = Sha256.getSHA256(STR);
+        //System.out.println("message" + message);
+
+        /*  32位随机数 */
+        String random = UUIDUtil.get32UUID().toUpperCase();
+        /**
+         * key: token中的tt值
+         * encodeTel:加密以后的手机号
+         * */
+        Map<String, String> map = Login.token(tel);
+        String key = map.get("tt");
+        String encodeTel = map.get("encodeTel");
+        //System.out.println("shoujihao ---------------" + encodeTel);
+        /*  手机号加密位参数sign*/
+        String sign = EncryptUtil.md5Encrypt(tel + "handbrush");
+
+        /*  拼接参数 */
+        String param = "app_down_platform=appstore&app_id=APP&appid=APP&i_version=1.0.0&password=" + password + "&platform_id=ios&random_str=" + random + "&sign=" + sign + "&tel=" + tel + "&timestamp=" + timeStp;
+        //System.out.println("param：" + param);
+        String sign_Hash = Sha256.getSHA256(param).toUpperCase();
+        //System.out.println("加密后signHash：" + sign_Hash);
+        String p = param + "&sign_hash=" + sign_Hash;
+        //System.out.println("连接后待加密字符串p：" + p);
+
+        /*  拼接参数后再加密 key是token接口返回的tt */
+        String enBody = null;
+        try {
+            //System.out.println("加密前p：" + p);
+            enBody = TDES_3DESUtil.encode(p, key);
+            //System.out.println("加密后p：" + enBody);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+        headers.add("random_str", timeStp);
+        headers.add("app_id", "APP");
+        headers.add("message", message);
+        headers.add("appId", "APP");
+        headers.add("channelCode", "110");
+
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("p", enBody);
+        body.add("q", encodeTel);
+
+        HttpEntity<String> request = new HttpEntity(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(loginUrl, request, String.class);
         //System.out.println(response);
         String loginSuccessBody = JSONObject.parseObject(response.getBody()).getString("body");
         //System.out.println(loginSuccessBody);
@@ -1029,14 +1233,6 @@ public class Login {
         }
         Assert.assertEquals(loginName, "汪小明");
         Assert.assertEquals(loginMsg, "已经实名认证");
-    }
-
-
-    /**
-     * 非实名认证用户登录
-     */
-    @Test
-    public void unCertificationUserloginTest(){
 
     }
 
